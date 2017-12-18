@@ -1,0 +1,42 @@
+%Unmasked Image 
+q = imread('creed.jpg');
+figure,imshow(q);title('Unmasked Image');
+
+%Watermark
+w = imread('plain1.jpg');
+figure,imshow(w);title('Watermark');
+
+ %Visibility of the watermark
+ viscon=0.5;
+ 
+Fw = (1-viscon)*q + viscon.*w;
+figure,imshow(Fw);title('Watermarked Image-Visibilty:0.5');
+
+%Read the Blog logo
+Logo = imread('logo.jpg');
+figure,imshow(Logo);title('Blog Logo');
+
+OIm = q;
+%Visibility control
+viscon = 0.5;
+ 
+[m, n,~]=size(Logo);
+ 
+%choose a portion of the Image
+Sz = [250 100];
+ 
+%Apply watermark
+OIm(Sz(1):Sz(1)+m-1,Sz(2):Sz(2)+n-1,:)=(1-viscon)*OIm(Sz(1):Sz(1)+m-1,Sz(2):Sz(2)+n-1,:) + viscon.*Logo;
+figure,imshow(OIm);title('Watermark in the centre');
+
+%LSB watermarked Image
+Fw1 = 4*(q/4) + w/64;
+figure,imshow(Fw1);title('LSB watermarked Image');
+
+%Retrieve the Watermark_1
+DMark = (Fw1-q)*64;
+figure,imshow(DMark);title('Watermark extracted from the image');
+
+%Retrieve the Watermark_2
+DMark = rem(Fw1,4)*64;
+figure,imshow(DMark);title('Watermark extracted from the image');
